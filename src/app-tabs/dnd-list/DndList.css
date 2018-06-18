@@ -1,0 +1,4 @@
+.ant-tabs-tabpane{
+	display: flex;
+	justify-content: space-between;
+};
