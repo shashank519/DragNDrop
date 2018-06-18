@@ -53,12 +53,12 @@ class Register extends Component {
             {...formItemLayout}
             label={(
               <span>
-                Field-1&nbsp;
+                Team&nbsp;
               </span>
             )}
           >
             {getFieldDecorator('field1', {
-              rules: [{ required: true, message: 'Please input field1!', whitespace: true }],
+              rules: [{ required: true, message: 'Please input Team!', whitespace: true }],
             })(
               <Input />
             )}
@@ -67,12 +67,12 @@ class Register extends Component {
             {...formItemLayout}
             label={(
               <span>
-                Field-2&nbsp;
+                Level&nbsp;
               </span>
             )}
           >
             {getFieldDecorator('field2', {
-              rules: [{ required: true, message: 'Please input field2!', whitespace: true }],
+              rules: [{ required: true, message: 'Please input Level!', whitespace: true }],
             })(
               <Input />
             )}
@@ -81,12 +81,12 @@ class Register extends Component {
             {...formItemLayout}
             label={(
               <span>
-                Field-3&nbsp;
+                Product&nbsp;
               </span>
             )}
           >
             {getFieldDecorator('field3', {
-              rules: [{ required: true, message: 'Please input field3!', whitespace: true }],
+              rules: [{ required: true, message: 'Please input Product!', whitespace: true }],
             })(
               <Input />
             )}
@@ -95,12 +95,12 @@ class Register extends Component {
             {...formItemLayout}
             label={(
               <span>
-                Field-4&nbsp;
+                Channel&nbsp;
               </span>
             )}
           >
             {getFieldDecorator('field4', {
-              rules: [{ required: true, message: 'Please input field4!', whitespace: true }],
+              rules: [{ required: true, message: 'Please input Channel!', whitespace: true }],
             })(
               <Input />
             )}
@@ -109,12 +109,26 @@ class Register extends Component {
             {...formItemLayout}
             label={(
               <span>
-                Field-5&nbsp;
+                Payperiod&nbsp;
               </span>
             )}
           >
             {getFieldDecorator('field5', {
-              rules: [{ required: true, message: 'Please input field5!', whitespace: true }],
+              rules: [{ required: true, message: 'Please input Payperiod!', whitespace: true }],
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
+            label={(
+              <span>
+                Component&nbsp;
+              </span>
+            )}
+          >
+            {getFieldDecorator('field6', {
+              rules: [{ required: true, message: 'Please input Component!', whitespace: true }],
             })(
               <Input />
             )}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, notification } from 'antd';
 
 import Register from './register/Register';
 import DndList from './dnd-list/DndList';
@@ -22,14 +22,23 @@ class AppTabs extends Component {
       return {dataList: [...this.state.dataList, value]}
     })
 
+    this.openNotificationWithIcon('success', 'Success', 'Registered successfully.');
+
     setTimeout(()=>{
       console.log(this.state.dataList);
-    }, 2000)
+    }, 2000);
   }
 
   onTabChange = key => {
     console.log(key);
   }
+
+  openNotificationWithIcon = (type, msg, desc) => {
+    notification[type]({
+      message: msg,
+      description: desc,
+    });
+  };
 
   render() {
     return (
