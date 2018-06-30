@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+    font-family: "Helvetica", sans-serif;
+}
+
+.container {
+    text-align: center;
+    padding: 15px;
+    margin: 10px auto;
+}
+
+.container .ant-row {
+    display: inline-flex;
+    align-items: left;
+    width: 100%;
+}
+
+.container .ant-row .ant-col-8 {
+    align-items: center;
+    display: inline-grid;
+    /* float: right; */
+    text-align: right;
+    padding-right: 2%;
+}
+
+.csv-input {
+    padding: 10px;
+    display: block;
+    margin: 15px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.container p {
+    padding-top: 10px;
+    color: #666;
+}
+
+.react-csv-input {
+    float: left;
+    padding-left: 2%;
+}
