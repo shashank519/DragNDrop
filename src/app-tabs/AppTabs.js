@@ -89,7 +89,7 @@ class AppTabs extends Component {
 	};
 
 	setDataListComponent = value => {
-		this.setState(this.state.dataListComponent);
+		this.setState({ dataListComponent: value });
 		this.openNotificationWithIcon(
 			"success",
 			"Success",

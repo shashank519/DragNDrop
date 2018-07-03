@@ -1,4 +1,8 @@
-.ant-tabs-tabpane{
+.ant-tabs-tabpane {
 	display: flex;
 	justify-content: space-between;
-};
+}
+
+.mgtp10 {
+	margin-top: 10px;
+}
