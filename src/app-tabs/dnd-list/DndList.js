@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Layout, Row, Col, notification } from "antd";
+import { Layout, Row, Col, notification, Select, Button } from "antd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SortableTree from "react-sortable-tree";
 import "./DndList.css";
 
 const { Content } = Layout;
+const Option = Select.Option;
 
 const getItems = (count, offset = 0) =>
 	Array.from({ length: count }, (v, k) => k).map(k => ({
@@ -166,15 +167,18 @@ class DndList extends Component {
 	render() {
 		return (
 			<Content style={{ padding: "25px 70px" }}>
+				<Select placeholder="Select Payperiod" style={{ width: 150, marginBottom: 30 }}>
+					{this.props.dataListPayperiod.map(payperiod => <Option value={payperiod.teamId}>{payperiod.teamDescription}</Option>)}
+				</Select>
 				<DragDropContext
 					onDragEnd={this.onDragEnd}
-					// onDragStart={this.onDragStart}
-					// onDragUpdate={this.onDragUpdate}
+				// onDragStart={this.onDragStart}
+				// onDragUpdate={this.onDragUpdate}
 				>
 					<Row>
 						<Col span={16}>
 							<Row>
-								<Col span={6} className={"mgtp10"}>
+								<Col span={4} className={"mgtp10"}>
 									<Droppable droppableId="droppable">
 										{(provided, snapshot) => (
 											<div
@@ -213,7 +217,7 @@ class DndList extends Component {
 									</Droppable>
 								</Col>
 
-								<Col span={6} className={"mgtp10"}>
+								<Col span={4} className={"mgtp10"}>
 									<Droppable droppableId="droppable2">
 										{(provided, snapshot) => (
 											<div
@@ -252,7 +256,7 @@ class DndList extends Component {
 									</Droppable>
 								</Col>
 
-								<Col span={6} className={"mgtp10"}>
+								<Col span={4} className={"mgtp10"}>
 									<Droppable droppableId="droppable3">
 										{(provided, snapshot) => (
 											<div
@@ -291,7 +295,7 @@ class DndList extends Component {
 									</Droppable>
 								</Col>
 
-								<Col span={6} className={"mgtp10"}>
+								<Col span={4} className={"mgtp10"}>
 									<Droppable droppableId="droppable4">
 										{(provided, snapshot) => (
 											<div
@@ -330,53 +334,14 @@ class DndList extends Component {
 									</Droppable>
 								</Col>
 
-								<Col span={6} className={"mgtp10"}>
+								<Col span={4} className={"mgtp10"}>
 									<Droppable droppableId="droppable5">
 										{(provided, snapshot) => (
 											<div
 												ref={provided.innerRef}
 												style={getListStyle(snapshot.isDraggingOver)}
 											>
-												<h3>Payperiod</h3>
-												{this.state.selected4.length &&
-													this.state.selected4.map(
-														(item, index) =>
-															item.teamId && (
-																<Draggable
-																	key={index}
-																	draggableId={item.teamId + index}
-																	index={index}
-																>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={getItemStyle(
-																				snapshot.isDragging,
-																				provided.draggableProps.style
-																			)}
-																		>
-																			{item.teamId}
-																		</div>
-																	)}
-																</Draggable>
-															)
-													)}
-												{provided.placeholder}
-											</div>
-										)}
-									</Droppable>
-								</Col>
-
-								<Col span={6} className={"mgtp10"}>
-									<Droppable droppableId="droppable6">
-										{(provided, snapshot) => (
-											<div
-												ref={provided.innerRef}
-												style={getListStyle(snapshot.isDraggingOver)}
-											>
-												<h3>Payperiod</h3>
+												<h3>Component</h3>
 												{this.state.selected5.length &&
 													this.state.selected5.map(
 														(item, index) =>
@@ -409,8 +374,8 @@ class DndList extends Component {
 								</Col>
 							</Row>
 						</Col>
-
-						<Col span={8} className={"mgtp10"}>
+						<Col span={2} />
+						<Col span={6} className={"mgtp10"}>
 							<Droppable droppableId="dropTree">
 								{(provided, snapshot) => (
 									<div
@@ -431,6 +396,12 @@ class DndList extends Component {
 						</Col>
 					</Row>
 				</DragDropContext>
+				<div style={{
+					float: 'right', marginTop: '15px',
+					marginRight: '100px'
+				}}>
+					<Button type="primary">Save Mapping</Button>
+				</div>
 			</Content>
 		);
 	}
