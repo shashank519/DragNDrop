@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Row, Col, notification, Select, Button } from "antd";
+import { Layout, Row, Col, notification, Select, Button, Icon, Modal, Input } from "antd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SortableTree from "react-sortable-tree";
 import "./DndList.css";
@@ -48,16 +48,16 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 	margin: `0 0 ${grid}px 0`,
 
 	// change background colour if dragging
-	background: isDragging ? "lightgreen" : "grey",
+	background: isDragging ? "lightgreen" : "#e6e6e6",
 
 	// styles we need to apply on draggables
 	...draggableStyle
 });
 
 const getListStyle = isDraggingOver => ({
-	background: isDraggingOver ? "lightblue" : "lightgrey",
+	background: isDraggingOver ? "lightblue" : "#c1bfbf",
 	padding: grid,
-	width: 250
+	width: 160
 });
 
 class DndList extends Component {
@@ -71,7 +71,11 @@ class DndList extends Component {
 			selected3: this.props.dataListChannel,
 			selected4: this.props.dataListPayperiod,
 			selected5: this.props.dataListComponent,
-			droppableTree: []
+			droppableTree: [],
+			visible: false,
+			disabledDrag: true,
+			id: '',
+			description: ''
 		};
 
 		console.log(this.props);
@@ -82,7 +86,7 @@ class DndList extends Component {
 		droppable2: "selected",
 		droppable3: "selected2",
 		droppable4: "selected3",
-		droppable5: "selected4",
+		// droppable5: "selected4",
 		droppable6: "selected5",
 		dropTree: "droppableTree"
 	};
@@ -163,239 +167,343 @@ class DndList extends Component {
 			description: desc
 		});
 	};
+	showModal = (itemId, type) => {
+		this.setState({
+			visible: true,
+		});
+		if (type === 'team') {
+			this.state.items.map(item => {
+				if (item.teamId === itemId) {
+					this.setState({
+						id: item.teamId,
+						description: item.teamDescription
+					})
+				}
+			})
+
+		}
+		else if (type === 'level')
+			this.state.selected.map(item => {
+				if (item.teamId === itemId) {
+					this.setState({
+						id: item.teamId,
+						description: item.teamDescription
+					})
+				}
+			})
+		else if (type === 'product')
+			this.state.selected2.map(item => {
+				if (item.teamId === itemId) {
+					this.setState({
+						id: item.teamId,
+						description: item.teamDescription
+					})
+				}
+			})
+		else if (type === 'channel')
+			this.state.selected3.map(item => {
+				if (item.teamId === itemId) {
+					this.setState({
+						id: item.teamId,
+						description: item.teamDescription
+					})
+				}
+			})
+		else if (type === 'component')
+			this.state.selected5.map(item => {
+				if (item.teamId === itemId) {
+					this.setState({
+						id: item.teamId,
+						description: item.teamDescription
+					})
+				}
+			})
+	}
+
+	handleOk = (e) => {
+		console.log(e);
+		this.setState({
+			visible: false,
+		});
+	}
+
+	handleCancel = (e) => {
+		console.log(e);
+		this.setState({
+			visible: false,
+		});
+	}
+
+	handelPayperiod = (e) => {
+		console.log('select', e)
+	}
+
+	handleTreeOnChange = treeData => {
+		this.setState({ droppableTree: treeData })
+	}
 
 	render() {
 		return (
 			<Content style={{ padding: "25px 70px" }}>
-				<Select placeholder="Select Payperiod" style={{ width: 150, marginBottom: 30 }}>
+				<Modal
+					title="Edit/View"
+					visible={this.state.visible}
+					onOk={this.handleOk}
+					onCancel={this.handleCancel}
+				>
+					<Input value={this.state.id} placeholder="Id" style={{ marginBottom: '15px' }} />
+					<Input value={this.state.description} placeholder="Description" />
+				</Modal>
+				<Select placeholder="Select Payperiod" style={{ width: 150, marginBottom: 30 }} onChange={this.handelPayperiod}>
 					{this.props.dataListPayperiod.map(payperiod => <Option value={payperiod.teamId}>{payperiod.teamDescription}</Option>)}
 				</Select>
-				<DragDropContext
-					onDragEnd={this.onDragEnd}
-				// onDragStart={this.onDragStart}
-				// onDragUpdate={this.onDragUpdate}
-				>
-					<Row>
-						<Col span={16}>
-							<Row>
-								<Col span={4} className={"mgtp10"}>
-									<Droppable droppableId="droppable">
-										{(provided, snapshot) => (
-											<div
-												ref={provided.innerRef}
-												style={getListStyle(snapshot.isDraggingOver)}
-											>
-												<h3>Team</h3>
-												{this.state.items.length &&
-													this.state.items.map(
-														(item, index) =>
-															item.teamId && (
-																<Draggable
-																	key={index}
-																	draggableId={item.teamId + index}
-																	index={index}
-																>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={getItemStyle(
-																				snapshot.isDragging,
-																				provided.draggableProps.style
-																			)}
-																		>
-																			{item.teamId}
-																		</div>
-																	)}
-																</Draggable>
-															)
-													)}
-												{provided.placeholder}
-											</div>
-										)}
-									</Droppable>
-								</Col>
+				<div disabled={this.state.disabledDrag}>
+					<DragDropContext
+						onDragEnd={this.onDragEnd}
+					// onDragStart={this.onDragStart}
+					// onDragUpdate={this.onDragUpdate}
+					>
+						<Row >
+							<Col span={18}>
+								<Row>
+									<Col span={5} className={"mgtp10"}>
+										<Droppable droppableId="droppable">
+											{(provided, snapshot) => (
+												<div
+													ref={provided.innerRef}
+													style={getListStyle(snapshot.isDraggingOver)}
+												>
+													<h3>Team</h3>
+													{this.state.items.length &&
+														this.state.items.map(
+															(item, index) =>
+																item.teamId && (
+																	<Draggable
+																		key={index}
+																		draggableId={item.teamId + index}
+																		index={index}
+																	>
+																		{(provided, snapshot) => (
+																			<div
+																				ref={provided.innerRef}
+																				{...provided.draggableProps}
+																				{...provided.dragHandleProps}
+																				style={getItemStyle(
+																					snapshot.isDragging,
+																					provided.draggableProps.style
+																				)}
+																			>
+																				{item.teamId}
+																				<div style={{ float: 'right' }}>
+																					<Icon style={{ color: 'blue', cursor: 'pointer' }} onClick={() => this.showModal(item.teamId, 'team')} type="edit" /> {' '}|{' '}
+																					<Icon style={{ color: 'red', cursor: 'pointer' }} type="delete" />
+																				</div>
+																			</div>
+																		)}
+																	</Draggable>
+																)
+														)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</Col>
 
-								<Col span={4} className={"mgtp10"}>
-									<Droppable droppableId="droppable2">
-										{(provided, snapshot) => (
-											<div
-												ref={provided.innerRef}
-												style={getListStyle(snapshot.isDraggingOver)}
-											>
-												<h3>Level</h3>
-												{this.state.selected.length &&
-													this.state.selected.map(
-														(item, index) =>
-															item.teamId && (
-																<Draggable
-																	key={index}
-																	draggableId={item.teamId + index}
-																	index={index}
-																>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={getItemStyle(
-																				snapshot.isDragging,
-																				provided.draggableProps.style
-																			)}
-																		>
-																			{item.teamId}
-																		</div>
-																	)}
-																</Draggable>
-															)
-													)}
-												{provided.placeholder}
-											</div>
-										)}
-									</Droppable>
-								</Col>
+									<Col span={5} className={"mgtp10"}>
+										<Droppable droppableId="droppable2">
+											{(provided, snapshot) => (
+												<div
+													ref={provided.innerRef}
+													style={getListStyle(snapshot.isDraggingOver)}
+												>
+													<h3>Level</h3>
+													{this.state.selected.length &&
+														this.state.selected.map(
+															(item, index) =>
+																item.teamId && (
+																	<Draggable
+																		key={index}
+																		draggableId={item.teamId + index}
+																		index={index}
+																	>
+																		{(provided, snapshot) => (
+																			<div
+																				ref={provided.innerRef}
+																				{...provided.draggableProps}
+																				{...provided.dragHandleProps}
+																				style={getItemStyle(
+																					snapshot.isDragging,
+																					provided.draggableProps.style
+																				)}
+																			>
+																				{item.teamId}
+																				<div style={{ float: 'right' }}>
+																					<Icon style={{ color: 'blue', cursor: 'pointer' }} onClick={() => this.showModal(item.teamId, 'level')} type="edit" /> {' '}|{' '}
+																					<Icon style={{ color: 'red', cursor: 'pointer' }} type="delete" />
+																				</div>
+																			</div>
+																		)}
+																	</Draggable>
+																)
+														)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</Col>
 
-								<Col span={4} className={"mgtp10"}>
-									<Droppable droppableId="droppable3">
-										{(provided, snapshot) => (
-											<div
-												ref={provided.innerRef}
-												style={getListStyle(snapshot.isDraggingOver)}
-											>
-												<h3>Product</h3>
-												{this.state.selected2.length &&
-													this.state.selected2.map(
-														(item, index) =>
-															item.teamId && (
-																<Draggable
-																	key={index}
-																	draggableId={item.teamId + index}
-																	index={index}
-																>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={getItemStyle(
-																				snapshot.isDragging,
-																				provided.draggableProps.style
-																			)}
-																		>
-																			{item.teamId}
-																		</div>
-																	)}
-																</Draggable>
-															)
-													)}
-												{provided.placeholder}
-											</div>
-										)}
-									</Droppable>
-								</Col>
+									<Col span={5} className={"mgtp10"}>
+										<Droppable droppableId="droppable3">
+											{(provided, snapshot) => (
+												<div
+													ref={provided.innerRef}
+													style={getListStyle(snapshot.isDraggingOver)}
+												>
+													<h3>Product</h3>
+													{this.state.selected2.length &&
+														this.state.selected2.map(
+															(item, index) =>
+																item.teamId && (
+																	<Draggable
+																		key={index}
+																		draggableId={item.teamId + index}
+																		index={index}
+																	>
+																		{(provided, snapshot) => (
+																			<div
+																				ref={provided.innerRef}
+																				{...provided.draggableProps}
+																				{...provided.dragHandleProps}
+																				style={getItemStyle(
+																					snapshot.isDragging,
+																					provided.draggableProps.style
+																				)}
+																			>
+																				{item.teamId}
+																				<div style={{ float: 'right' }}>
+																					<Icon style={{ color: 'blue', cursor: 'pointer' }} onClick={() => this.showModal(item.teamId, 'product')} type="edit" /> {' '}|{' '}
+																					<Icon style={{ color: 'red', cursor: 'pointer' }} type="delete" />
+																				</div>
+																			</div>
+																		)}
+																	</Draggable>
+																)
+														)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</Col>
 
-								<Col span={4} className={"mgtp10"}>
-									<Droppable droppableId="droppable4">
-										{(provided, snapshot) => (
-											<div
-												ref={provided.innerRef}
-												style={getListStyle(snapshot.isDraggingOver)}
-											>
-												<h3>Channel</h3>
-												{this.state.selected3.length &&
-													this.state.selected3.map(
-														(item, index) =>
-															item.teamId && (
-																<Draggable
-																	key={index}
-																	draggableId={item.teamId + index}
-																	index={index}
-																>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={getItemStyle(
-																				snapshot.isDragging,
-																				provided.draggableProps.style
-																			)}
-																		>
-																			{item.teamId}
-																		</div>
-																	)}
-																</Draggable>
-															)
-													)}
-												{provided.placeholder}
-											</div>
-										)}
-									</Droppable>
-								</Col>
+									<Col span={5} className={"mgtp10"}>
+										<Droppable droppableId="droppable4">
+											{(provided, snapshot) => (
+												<div
+													ref={provided.innerRef}
+													style={getListStyle(snapshot.isDraggingOver)}
+												>
+													<h3>Channel</h3>
+													{this.state.selected3.length &&
+														this.state.selected3.map(
+															(item, index) =>
+																item.teamId && (
+																	<Draggable
+																		key={index}
+																		draggableId={item.teamId + index}
+																		index={index}
+																	>
+																		{(provided, snapshot) => (
+																			<div
+																				ref={provided.innerRef}
+																				{...provided.draggableProps}
+																				{...provided.dragHandleProps}
+																				style={getItemStyle(
+																					snapshot.isDragging,
+																					provided.draggableProps.style
+																				)}
+																			>
+																				{item.teamId}
+																				<div style={{ float: 'right' }}>
+																					<Icon style={{ color: 'blue', cursor: 'pointer' }} onClick={() => this.showModal(item.teamId, 'channel')} type="edit" /> {' '}|{' '}
+																					<Icon style={{ color: 'red', cursor: 'pointer' }} type="delete" />
+																				</div>
+																			</div>
+																		)}
+																	</Draggable>
+																)
+														)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</Col>
 
-								<Col span={4} className={"mgtp10"}>
-									<Droppable droppableId="droppable5">
-										{(provided, snapshot) => (
-											<div
-												ref={provided.innerRef}
-												style={getListStyle(snapshot.isDraggingOver)}
-											>
-												<h3>Component</h3>
-												{this.state.selected5.length &&
-													this.state.selected5.map(
-														(item, index) =>
-															item.teamId && (
-																<Draggable
-																	key={index}
-																	draggableId={item.teamId + index}
-																	index={index}
-																>
-																	{(provided, snapshot) => (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={getItemStyle(
-																				snapshot.isDragging,
-																				provided.draggableProps.style
-																			)}
-																		>
-																			{item.teamId}
-																		</div>
-																	)}
-																</Draggable>
-															)
-													)}
-												{provided.placeholder}
-											</div>
-										)}
-									</Droppable>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={2} />
-						<Col span={6} className={"mgtp10"}>
-							<Droppable droppableId="dropTree">
-								{(provided, snapshot) => (
-									<div
-										ref={provided.innerRef}
-										style={{
-											height: "800px",
-											backgroundColor: snapshot.isDraggingOver ? "blue" : "grey"
-										}}
-										className="droppable-area"
-									>
-										<SortableTree
-											treeData={this.state.droppableTree}
-											onChange={treeData => null}
-										/>
-									</div>
-								)}
-							</Droppable>
-						</Col>
-					</Row>
-				</DragDropContext>
+									<Col span={5} className={"mgtp10"}>
+										<Droppable droppableId="droppable6">
+											{(provided, snapshot) => (
+												<div
+													ref={provided.innerRef}
+													style={getListStyle(snapshot.isDraggingOver)}
+												>
+													<h3>Component</h3>
+													{this.state.selected5.length &&
+														this.state.selected5.map(
+															(item, index) =>
+																item.teamId && (
+																	<Draggable
+																		key={index}
+																		draggableId={item.teamId + index}
+																		index={index}
+																	>
+																		{(provided, snapshot) => (
+																			<div
+																				ref={provided.innerRef}
+																				{...provided.draggableProps}
+																				{...provided.dragHandleProps}
+																				style={getItemStyle(
+																					snapshot.isDragging,
+																					provided.draggableProps.style
+																				)}
+																			>
+																				{item.teamId}
+																				<div style={{ float: 'right' }}>
+																					<Icon style={{ color: 'blue', cursor: 'pointer' }} onClick={() => this.showModal(item.teamId, 'component')} type="edit" /> {' '}|{' '}
+																					<Icon style={{ color: 'red', cursor: 'pointer' }} type="delete" />
+																				</div>
+																			</div>
+																		)}
+																	</Draggable>
+																)
+														)}
+													{provided.placeholder}
+												</div>
+											)}
+										</Droppable>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={6} className={"mgtp10"}>
+								<Droppable droppableId="dropTree">
+									{(provided, snapshot) => (
+										<div
+											ref={provided.innerRef}
+											style={{
+												height: "800px",
+												backgroundColor: snapshot.isDraggingOver ? "blue" : "grey"
+											}}
+											className="droppable-area"
+										>
+											<SortableTree
+												treeData={this.state.droppableTree}
+												onChange={treeData => this.handleTreeOnChange(treeData)}
+											/>
+										</div>
+									)}
+								</Droppable>
+							</Col>
+						</Row>
+					</DragDropContext>
+				</div>
 				<div style={{
 					float: 'right', marginTop: '15px',
 					marginRight: '100px'
