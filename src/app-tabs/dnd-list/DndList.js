@@ -12,8 +12,7 @@ import {
   message
 } from "antd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import SortableTree, { removeNodeAtPath } from "react-sortable-tree";
-import FileExplorerTheme from "react-sortable-tree-theme-full-node-drag";
+import SortableTree from "react-sortable-tree";
 import "./DndList.css";
 
 const { Content } = Layout;
@@ -106,12 +105,12 @@ class DndList extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch("http://127.0.0.1:9000/register/team/"),
-      fetch("http://127.0.0.1:9000/register/level/"),
-      fetch("http://127.0.0.1:9000/register/product/"),
-      fetch("http://127.0.0.1:9000/register/channel/"),
-      fetch("http://127.0.0.1:9000/register/payperiod/"),
-      fetch("http://127.0.0.1:9000/register/component/")
+      fetch("http://127.0.0.1:8000/register/team/"),
+      fetch("http://127.0.0.1:8000/register/level/"),
+      fetch("http://127.0.0.1:8000/register/product/"),
+      fetch("http://127.0.0.1:8000/register/channel/"),
+      fetch("http://127.0.0.1:8000/register/payperiod/"),
+      fetch("http://127.0.0.1:8000/register/component/")
     ])
       .then(([team, level, product, channel, payperiod, component]) => {
         return Promise.all([
@@ -328,8 +327,41 @@ class DndList extends Component {
   };
 
   saveTree = () => {
-    console.log("Mapping Data", this.state.droppableTree);
+    let treeData = this.state.droppableTree;
+    if (treeData.length && treeData[0].componentId) {
+      if (treeData[0].children.length && treeData[0].children[0].teamId) {
+        if (
+          treeData[0].children[0].children.length &&
+          treeData[0].children[0].children[0].levelId
+        ) {
+          if (
+            treeData[0].children[0].children[0].children.length &&
+            treeData[0].children[0].children[0].children[0].productId
+          ) {
+            if (
+              treeData[0].children[0].children[0].children[0].children.length &&
+              treeData[0].children[0].children[0].children[0].children[0]
+                .channelId
+            ) {
+              console.log("Mapping Data", this.state.droppableTree);
+              message.success("Mapping saved successfully");
+            } else {
+              message.error("This mapping cant be saved.!");
+            }
+          } else {
+            message.error("This mapping cant be saved.!");
+          }
+        } else {
+          message.error("This mapping cant be saved.!");
+        }
+      } else {
+        message.error("This mapping cant be saved.!");
+      }
+    } else {
+      message.error("This mapping cant be saved.!");
+    }
   };
+
   removeNodeFromTree = rowInfo => {
     let { node, treeIndex, path } = rowInfo;
     // console.log("children", node);
@@ -337,6 +369,7 @@ class DndList extends Component {
       message.error("Parent node can't be deleted");
       return;
     }
+
     const removeFromTree = (parent, childNameToRemove) => {
       parent.children = parent.children
         .filter(function(child) {
@@ -405,6 +438,73 @@ class DndList extends Component {
             <Row>
               <Col span={18}>
                 <Row>
+                  <Col span={5} className={"mgtp10"}>
+                    <Droppable droppableId="droppable6">
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          style={getListStyle(snapshot.isDraggingOver)}
+                        >
+                          <h3>BU</h3>
+                          {this.state.selected5.length &&
+                            this.state.selected5.map(
+                              (item, index) =>
+                                item.componentId && (
+                                  <Draggable
+                                    key={index}
+                                    draggableId={item.componentId + index}
+                                    index={index}
+                                  >
+                                    {(provided, snapshot) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        style={getItemStyle(
+                                          snapshot.isDragging,
+                                          provided.draggableProps.style
+                                        )}
+                                      >
+                                        {item.componentId}
+                                        <div style={{ float: "right" }}>
+                                          <Icon
+                                            style={{
+                                              color: "blue",
+                                              cursor: "pointer"
+                                            }}
+                                            onClick={() =>
+                                              this.showModal(
+                                                item.componentId,
+                                                "component"
+                                              )
+                                            }
+                                            type="edit"
+                                          />{" "}
+                                          |{" "}
+                                          <Icon
+                                            style={{
+                                              color: "red",
+                                              cursor: "pointer"
+                                            }}
+                                            onClick={() =>
+                                              this.deleteRow(
+                                                item.componentId,
+                                                "component"
+                                              )
+                                            }
+                                            type="delete"
+                                          />
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                )
+                            )}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </Col>
                   <Col span={5} className={"mgtp10"}>
                     <Droppable droppableId="droppable">
                       {(provided, snapshot) => (
@@ -661,74 +761,6 @@ class DndList extends Component {
                                               this.deleteRow(
                                                 item.channelId,
                                                 "channel"
-                                              )
-                                            }
-                                            type="delete"
-                                          />
-                                        </div>
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                )
-                            )}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </Col>
-
-                  <Col span={5} className={"mgtp10"}>
-                    <Droppable droppableId="droppable6">
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          style={getListStyle(snapshot.isDraggingOver)}
-                        >
-                          <h3>Component</h3>
-                          {this.state.selected5.length &&
-                            this.state.selected5.map(
-                              (item, index) =>
-                                item.componentId && (
-                                  <Draggable
-                                    key={index}
-                                    draggableId={item.componentId + index}
-                                    index={index}
-                                  >
-                                    {(provided, snapshot) => (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        style={getItemStyle(
-                                          snapshot.isDragging,
-                                          provided.draggableProps.style
-                                        )}
-                                      >
-                                        {item.componentId}
-                                        <div style={{ float: "right" }}>
-                                          <Icon
-                                            style={{
-                                              color: "blue",
-                                              cursor: "pointer"
-                                            }}
-                                            onClick={() =>
-                                              this.showModal(
-                                                item.componentId,
-                                                "component"
-                                              )
-                                            }
-                                            type="edit"
-                                          />{" "}
-                                          |{" "}
-                                          <Icon
-                                            style={{
-                                              color: "red",
-                                              cursor: "pointer"
-                                            }}
-                                            onClick={() =>
-                                              this.deleteRow(
-                                                item.componentId,
-                                                "component"
                                               )
                                             }
                                             type="delete"

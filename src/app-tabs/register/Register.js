@@ -42,14 +42,14 @@ class Register extends Component {
       jsn.levelId = data[i][0];
       jsn.title = data[i][0];
       jsn.description = data[i][1];
-       fetch("http://127.0.0.1:9000/register/level/", {
-         method: "POST",
-         headers: {
-           Accept: "application/json",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify(jsn)
-       });
+      fetch("http://127.0.0.1:9000/register/level/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsn)
+      });
     }
   };
 
@@ -63,14 +63,14 @@ class Register extends Component {
       jsn.productId = data[i][0];
       jsn.title = data[i][0];
       jsn.description = data[i][1];
-       fetch("http://127.0.0.1:9000/register/product/", {
-         method: "POST",
-         headers: {
-           Accept: "application/json",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify(jsn)
-       });
+      fetch("http://127.0.0.1:9000/register/product/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsn)
+      });
     }
   };
 
@@ -84,14 +84,14 @@ class Register extends Component {
       jsn.channelId = data[i][0];
       jsn.title = data[i][0];
       jsn.description = data[i][1];
-       fetch("http://127.0.0.1:9000/register/channel/", {
-         method: "POST",
-         headers: {
-           Accept: "application/json",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify(jsn)
-       });
+      fetch("http://127.0.0.1:9000/register/channel/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsn)
+      });
     }
   };
 
@@ -105,14 +105,14 @@ class Register extends Component {
       jsn.payperiodId = data[i][0];
       jsn.title = data[i][0];
       jsn.description = data[i][1];
-       fetch("http://127.0.0.1:9000/register/payperiod/", {
-         method: "POST",
-         headers: {
-           Accept: "application/json",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify(jsn)
-       });
+      fetch("http://127.0.0.1:9000/register/payperiod/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsn)
+      });
     }
   };
 
@@ -126,14 +126,14 @@ class Register extends Component {
       jsn.componentId = data[i][0];
       jsn.title = data[i][0];
       jsn.description = data[i][1];
-       fetch("http://127.0.0.1:9000/register/component/", {
-         method: "POST",
-         headers: {
-           Accept: "application/json",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify(jsn)
-       });
+      fetch("http://127.0.0.1:9000/register/component/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsn)
+      });
     }
   };
 
@@ -141,6 +141,30 @@ class Register extends Component {
     return (
       <Content style={{ padding: "25px 70px" }}>
         <div className="container">
+          <Row>
+            <Col span={8}>
+              <label style={{ float: "right", fontWeight: "bold" }}>
+                Payperiod :
+              </label>
+            </Col>
+            <Col span={16}>
+              <CSVReader
+                cssClass="react-csv-input"
+                onFileLoaded={this.handlePayperiod}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={8}>
+              <label style={{ float: "right", fontWeight: "bold" }}>BU :</label>
+            </Col>
+            <Col span={16}>
+              <CSVReader
+                cssClass="react-csv-input"
+                onFileLoaded={this.handleComponent}
+              />
+            </Col>
+          </Row>
           <Row>
             <Col span={8}>
               <label style={{ float: "right", fontWeight: "bold" }}>
@@ -190,32 +214,6 @@ class Register extends Component {
               <CSVReader
                 cssClass="react-csv-input"
                 onFileLoaded={this.handleChannel}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={8}>
-              <label style={{ float: "right", fontWeight: "bold" }}>
-                Payperiod :
-              </label>
-            </Col>
-            <Col span={16}>
-              <CSVReader
-                cssClass="react-csv-input"
-                onFileLoaded={this.handlePayperiod}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={8}>
-              <label style={{ float: "right", fontWeight: "bold" }}>
-                Component :
-              </label>
-            </Col>
-            <Col span={16}>
-              <CSVReader
-                cssClass="react-csv-input"
-                onFileLoaded={this.handleComponent}
               />
             </Col>
           </Row>
