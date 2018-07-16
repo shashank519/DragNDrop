@@ -12,109 +12,129 @@ class Register extends Component {
   };
 
   handleTeam = data => {
-    let a = [];
     for (let i = 0; i < data.length; i++) {
       let jsn = {
         teamId: 0,
         title: "",
-        teamDescription: ""
+        description: ""
       };
       jsn.teamId = data[i][0];
       jsn.title = data[i][0];
-      jsn.teamDescription = data[i][1];
-      a.push(jsn);
+      jsn.description = data[i][1];
+      fetch("http://127.0.0.1:9000/register/team/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsn)
+      });
     }
-    this.props.setDataListTeam(a);
   };
 
   handleLevel = data => {
-    let a = [];
-
     for (let i = 0; i < data.length; i++) {
       let jsn = {
-        teamId: 0,
+        levelId: 0,
         title: "",
-        teamDescription: ""
+        description: ""
       };
-      jsn.teamId = data[i][0];
+      jsn.levelId = data[i][0];
       jsn.title = data[i][0];
-      jsn.teamDescription = data[i][1];
-      a.push(jsn);
+      jsn.description = data[i][1];
+       fetch("http://127.0.0.1:9000/register/level/", {
+         method: "POST",
+         headers: {
+           Accept: "application/json",
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify(jsn)
+       });
     }
-    this.props.setDataListLevel(a);
-    console.log(a);
   };
 
   handleProduct = data => {
-    let a = [];
-
     for (let i = 0; i < data.length; i++) {
       let jsn = {
-        teamId: 0,
+        productId: 0,
         title: "",
-        teamDescription: ""
+        description: ""
       };
-      jsn.teamId = data[i][0];
+      jsn.productId = data[i][0];
       jsn.title = data[i][0];
-      jsn.teamDescription = data[i][1];
-      a.push(jsn);
+      jsn.description = data[i][1];
+       fetch("http://127.0.0.1:9000/register/product/", {
+         method: "POST",
+         headers: {
+           Accept: "application/json",
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify(jsn)
+       });
     }
-    this.props.setDataListProduct(a);
-    console.log(a);
   };
 
   handleChannel = data => {
-    let a = [];
-
     for (let i = 0; i < data.length; i++) {
       let jsn = {
-        teamId: 0,
+        channelId: 0,
         title: "",
-        teamDescription: ""
+        description: ""
       };
-      jsn.teamId = data[i][0];
+      jsn.channelId = data[i][0];
       jsn.title = data[i][0];
-      jsn.teamDescription = data[i][1];
-      a.push(jsn);
+      jsn.description = data[i][1];
+       fetch("http://127.0.0.1:9000/register/channel/", {
+         method: "POST",
+         headers: {
+           Accept: "application/json",
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify(jsn)
+       });
     }
-    this.props.setDataListChannel(a);
-    console.log(a);
   };
 
   handlePayperiod = data => {
-    let a = [];
-
     for (let i = 0; i < data.length; i++) {
       let jsn = {
-        teamId: 0,
+        payperiodId: 0,
         title: "",
-        teamDescription: ""
+        description: ""
       };
-      jsn.teamId = data[i][0];
+      jsn.payperiodId = data[i][0];
       jsn.title = data[i][0];
-      jsn.teamDescription = data[i][1];
-      a.push(jsn);
+      jsn.description = data[i][1];
+       fetch("http://127.0.0.1:9000/register/payperiod/", {
+         method: "POST",
+         headers: {
+           Accept: "application/json",
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify(jsn)
+       });
     }
-    this.props.setDataListPayperiod(a);
-    console.log(a);
   };
 
   handleComponent = data => {
-    let a = [];
-
     for (let i = 0; i < data.length; i++) {
       let jsn = {
-        teamId: 0,
+        componentId: 0,
         title: "",
-        teamDescription: ""
+        description: ""
       };
-      jsn.teamId = data[i][0];
+      jsn.componentId = data[i][0];
       jsn.title = data[i][0];
-      jsn.teamDescription = data[i][1];
-      a.push(jsn);
+      jsn.description = data[i][1];
+       fetch("http://127.0.0.1:9000/register/component/", {
+         method: "POST",
+         headers: {
+           Accept: "application/json",
+           "Content-Type": "application/json"
+         },
+         body: JSON.stringify(jsn)
+       });
     }
-    this.props.setDataListComponent(a);
-    console.log(a);
   };
 
   render() {
